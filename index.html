@@ -731,7 +731,7 @@ footer span{color:var(--gold);}
   </div>
   <div class="chat-msgs" id="chatMsgs"></div>
   <div class="chat-sugs" id="chatSugs"></div>
-  <div class="chat-api-warn" id="apiWarn">&#9888; Add your Gemini API key to activate the AI assistant.</div>
+  <div class="chat-api-warn" id="apiWarn">&#9888; Set your proxy URL to activate the AI assistant.</div>
   <div class="chat-input-row">
     <input type="text" class="chat-input" id="chatInput" placeholder="Ask about Hassan..." maxlength="300" aria-label="Chat"/>
     <button class="chat-send" id="sendBtn" onclick="sendChat()" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
@@ -739,10 +739,12 @@ footer span{color:var(--gold);}
 </div>
 <script>
 /* ══════════════════════════════════════════
-   STEP 1: PASTE YOUR FREE GEMINI API KEY
-   Get it at: aistudio.google.com → Get API Key
+   STEP 1: PASTE YOUR DEPLOYED PROXY URL
+   (Deploy api/chat.js to Vercel first, then
+   paste the resulting URL below — see the
+   deployment guide for full steps.)
 ══════════════════════════════════════════ */
-const GEMINI_API_KEY = "MY_API_KEY_1";
+const PROXY_URL = "https://hassan-gemini-proxy.vercel.app/api/chat";
 
 /* ══════════════════════════════════════════
    CERTIFICATIONS DATA WITH VERIFIED LINKS
@@ -915,7 +917,6 @@ function submitRev() {
 /* ══════════════════════════════════════════
    GEMINI AI CHATBOT
 ══════════════════════════════════════════ */
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+GEMINI_API_KEY;
 const HASSAN_INFO = `You are the warm, professional AI portfolio assistant for Muhammad Hassan Akram. Answer visitor questions about Hassan in 2-4 sentences maximum. Be enthusiastic but concise, and invite visitors to contact Hassan directly for anything you cannot fully answer.
 NAME: Muhammad Hassan Akram.
 DEGREE: B.Sc (Hons) Food Science & Technology, University of Agriculture Faisalabad (UAF), CGPA 3.60, currently in 6th Semester (2023-2027).
@@ -938,7 +939,7 @@ function toggleChat() {
   ic.className = chatOpen?"fas fa-times":"fas fa-robot";
   if(chatOpen && firstOpen){
     firstOpen=false;
-    if(!GEMINI_API_KEY || GEMINI_API_KEY==="MY_API_KEY_1") document.getElementById("apiWarn").style.display="block";
+    if(!PROXY_URL || PROXY_URL.indexOf("YOUR_")===0) document.getElementById("apiWarn").style.display="block";
     addMsg("bot","👋 Hi! I'm Hassan's AI assistant. Ask me anything about his food science expertise, digital marketing skills, certifications, or how to get in touch!");
     const s=document.getElementById("chatSugs");
     s.innerHTML=sugs.map((q,i)=>`<button class="sug-btn" data-idx="${i}"><i class="fas fa-angle-right" style="font-size:.65rem;margin-right:3px"></i>${q}</button>`).join("");
@@ -965,17 +966,17 @@ async function sendChat(){
   const btn=document.getElementById("sendBtn");
   const text=inp.value.trim();
   if(!text) return;
-  if(!GEMINI_API_KEY || GEMINI_API_KEY==="MY_API_KEY_1"){
+  if(!PROXY_URL || PROXY_URL.indexOf("YOUR_")===0){
     document.getElementById("apiWarn").style.display="block";
-    addMsg("bot","Please add your Gemini API key first. Get it free at aistudio.google.com!",true);
+    addMsg("bot","The chat proxy isn't set up yet — see the deployment guide to get it running.",true);
     return;
   }
   inp.value=""; document.getElementById("chatSugs").innerHTML="";
   addMsg("user",text); btn.disabled=true; inp.disabled=true; showTyping();
   chatHistory.push({role:"user",parts:[{text}]});
   try{
-    const res=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({system_instruction:{parts:[{text:HASSAN_INFO}]},contents:chatHistory,generationConfig:{maxOutputTokens:200,temperature:0.7}})});
+    const res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({system_instruction:{parts:[{text:HASSAN_INFO}]},contents:chatHistory,generationConfig:{maxOutputTokens:200,thinkingConfig:{thinkingLevel:"low"}}})});
     const data=await res.json();
     const t=document.getElementById("typing"); if(t) t.remove();
     if(res.ok && data.candidates && data.candidates[0] && data.candidates[0].content){
