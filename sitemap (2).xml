@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ============ LIVE PAGES ============ -->
+
+  <url>
+    <loc>https://muhammadhassanakram.me/</loc>
+    <lastmod>2026-07-12</lastmod>
+  </url>
+
+  <!-- ============ ADD NEW PAGES ABOVE THIS LINE ============
+       For each new public page: copy the <url> block below, fill
+       in the two placeholders, and move it up into LIVE PAGES.
+       Keep <lastmod> honest — update it only when that page's
+       content actually changes, not on every deploy.
+
+  <url>
+    <loc>https://muhammadhassanakram.me/PAGE-URL-HERE.html</loc>
+    <lastmod>YYYY-MM-DD</lastmod>
+  </url>
+
+  ========================================================= -->
+
+</urlset>
