@@ -50,6 +50,24 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(14,31,71,0.97);
 .nav-links{display:flex;gap:1.4rem;list-style:none;}
 .nav-links a{color:rgba(255,255,255,0.78);text-decoration:none;font-size:0.8rem;font-weight:500;transition:all 0.2s;padding-bottom:3px;border-bottom:2px solid transparent;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold2);border-color:var(--gold);}
+.nav-dropdown{position:relative;}
+.nav-caret{font-size:0.58rem;margin-left:3px;transition:transform 0.25s;}
+.nav-dropdown:hover .nav-caret,.nav-dropdown:focus-within .nav-caret{transform:rotate(180deg);}
+.nav-dropdown-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:16px;min-width:250px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease,visibility 0.25s;z-index:1001;}
+.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;visibility:visible;pointer-events:all;}
+.nav-dropdown-inner{background:var(--white);border-radius:12px;box-shadow:0 20px 50px rgba(7,15,37,0.3);padding:0.55rem;transform:translateY(-8px);transition:transform 0.25s ease;}
+.nav-dropdown:hover .nav-dropdown-inner,.nav-dropdown:focus-within .nav-dropdown-inner{transform:translateY(0);}
+.nav-dropdown-menu a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;color:var(--navy);text-decoration:none;font-size:0.8rem;font-weight:600;transition:all 0.18s;}
+.nav-dropdown-menu a i{color:var(--gold);width:14px;text-align:center;font-size:0.78rem;}
+.nav-dropdown-menu a:hover{background:var(--light);padding-left:19px;}
+.nav-dropdown-menu .nav-dropdown-all{border-top:1px solid var(--border);margin-top:0.4rem;padding-top:0.7rem;color:var(--gold);}
+.nav-dropdown-menu .nav-dropdown-all i{color:var(--gold);}
+.mob-dropdown-toggle{width:100%;background:none;border:none;color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.07);font-family:inherit;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.mob-dropdown-toggle i{font-size:0.7rem;transition:transform 0.25s;color:var(--gold2);}
+.mob-dropdown.open .mob-dropdown-toggle i{transform:rotate(180deg);}
+.mob-dropdown-menu{max-height:0;overflow:hidden;transition:max-height 0.35s ease;display:flex;flex-direction:column;}
+.mob-dropdown.open .mob-dropdown-menu{max-height:320px;}
+.mob-dropdown-menu a{padding:0.55rem 0 0.55rem 1rem;font-size:0.84rem;color:rgba(255,255,255,0.7);border-bottom:none;}
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:9px 20px;border-radius:7px;font-weight:800;font-size:0.8rem;text-decoration:none;transition:all 0.2s;box-shadow:0 3px 14px rgba(200,151,43,0.3);}
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,151,43,0.5);}
 .hamburger{display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;}
@@ -73,21 +91,17 @@ section{padding:85px 5%;}
 .crumb span[aria-current]{color:var(--gold2);}
 #pageHead .sec-title{margin-bottom:0.7rem;}
 .page-sub{color:rgba(255,255,255,0.65);font-size:1rem;max-width:600px;margin:0 auto;line-height:1.7;}
-/* CATEGORY CARDS (the primary "choose a topic" landing experience) */
-#categories{background:var(--light);}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.5rem;}
-.cat-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:2rem 1.6rem;text-align:left;cursor:pointer;transition:all 0.35s cubic-bezier(.4,0,.2,1);font-family:inherit;display:flex;flex-direction:column;gap:0.7rem;position:relative;overflow:hidden;}
-.cat-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,151,43,0.06),transparent 60%);opacity:0;transition:opacity 0.35s;}
-.cat-card:hover{transform:translateY(-7px);border-color:var(--gold);box-shadow:0 18px 40px rgba(14,31,71,0.14);}
-.cat-card:hover::before{opacity:1;}
-.cat-icon{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all 0.35s;}
-.cat-card:hover .cat-icon{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);transform:scale(1.08) rotate(-4deg);}
-.cat-card h3{font-family:"Playfair Display",serif;font-size:1.15rem;color:var(--navy);}
-.cat-card p{font-size:0.85rem;color:var(--muted);line-height:1.6;flex:1;}
-.cat-go{font-size:0.78rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;opacity:0;transform:translateX(-6px);transition:all 0.3s;}
-.cat-card:hover .cat-go{opacity:1;transform:translateX(0);}
-.cat-go i{transition:transform 0.3s;}
-.cat-card:hover .cat-go i{transform:translateX(3px);}
+/* SEARCH BAR (replaces the old category cards as the page's entry point) */
+.insight-search{max-width:520px;margin:2.2rem auto 0;position:relative;}
+.insight-search input{width:100%;padding:15px 50px;border-radius:100px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);color:var(--white);font-size:0.92rem;font-family:inherit;transition:all 0.3s;}
+.insight-search input::placeholder{color:rgba(255,255,255,0.45);}
+.insight-search input:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,0.13);box-shadow:0 0 0 4px rgba(200,151,43,0.16),0 12px 32px rgba(0,0,0,0.25);}
+.search-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.5);transition:color 0.3s;font-size:0.9rem;pointer-events:none;}
+.insight-search input:focus ~ .search-icon{color:var(--gold2);}
+.search-clear{position:absolute;right:18px;top:50%;transform:translateY(-50%) scale(0);color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.2s;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;}
+.search-clear.show{transform:translateY(-50%) scale(1);}
+.search-clear:hover{color:var(--navy);background:var(--gold2);}
+.no-results{grid-column:1/-1;text-align:center;padding:3rem 1.5rem;color:rgba(255,255,255,0.5);}
 /* CATEGORY FILTERS (light-background variant of the certifications filter pattern) */
 .ifilter{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-bottom:3rem;}
 .ifbtn{padding:8px 20px;border-radius:100px;font-size:0.8rem;font-weight:700;border:1.5px solid var(--border);color:var(--muted);background:var(--white);cursor:pointer;transition:all 0.2s;}
@@ -141,7 +155,19 @@ footer span{color:var(--gold);}
     <li><a href="index.html#certifications">Certifications</a></li>
     <li><a href="index.html#reviews">Reviews</a></li>
     <li><a href="index.html#sports">Sports</a></li>
-    <li><a href="insights.html" class="active">Insights</a></li>
+    <li class="nav-dropdown">
+      <a href="insights.html" class="active nav-insights">Insights <i class="fas fa-chevron-down nav-caret"></i></a>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-inner">
+          <a href="insights.html?cat=food-science"><i class="fas fa-flask"></i> Food Science &amp; Technology</a>
+          <a href="insights.html?cat=digital-marketing"><i class="fas fa-bullhorn"></i> Digital Marketing</a>
+          <a href="insights.html?cat=scholarships"><i class="fas fa-award"></i> Scholarships</a>
+          <a href="insights.html?cat=ai-tech"><i class="fas fa-robot"></i> AI &amp; Technology</a>
+          <a href="insights.html?cat=career"><i class="fas fa-briefcase"></i> Career &amp; Professional Development</a>
+          <a href="insights.html" class="nav-dropdown-all">View All Insights <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
   <a href="index.html#contact" class="nav-cta">Hire Me</a>
@@ -155,7 +181,17 @@ footer span{color:var(--gold);}
   <a href="index.html#certifications" onclick="toggleMob()">Certifications</a>
   <a href="index.html#reviews" onclick="toggleMob()">Reviews</a>
   <a href="index.html#sports" onclick="toggleMob()">Sports & Interests</a>
-  <a href="insights.html" onclick="toggleMob()">Insights</a>
+  <div class="mob-dropdown">
+    <button class="mob-dropdown-toggle" onclick="this.parentElement.classList.toggle('open')">Insights <i class="fas fa-chevron-down"></i></button>
+    <div class="mob-dropdown-menu">
+      <a href="insights.html?cat=food-science" onclick="toggleMob()">Food Science &amp; Technology</a>
+      <a href="insights.html?cat=digital-marketing" onclick="toggleMob()">Digital Marketing</a>
+      <a href="insights.html?cat=scholarships" onclick="toggleMob()">Scholarships</a>
+      <a href="insights.html?cat=ai-tech" onclick="toggleMob()">AI &amp; Technology</a>
+      <a href="insights.html?cat=career" onclick="toggleMob()">Career &amp; Professional Development</a>
+      <a href="insights.html" onclick="toggleMob()" style="color:var(--gold2)">View All Insights</a>
+    </div>
+  </div>
   <a href="index.html#contact" onclick="toggleMob()">Contact</a>
 </div>
 <main>
@@ -167,46 +203,11 @@ footer span{color:var(--gold);}
     <span aria-current="page">Insights</span>
   </nav>
   <h1 class="sec-title light">Insights</h1>
-  <p class="page-sub">Notes and articles on food science, artificial intelligence, digital marketing, student resources, and career growth.</p>
-</section>
-<!-- CATEGORIES -->
-<section id="categories" aria-label="Browse by category">
-  <div class="sec">
-    <span class="sec-tag">Browse By Topic</span>
-    <h2 class="sec-title">Choose What Interests You</h2>
-    <div class="sec-line"></div>
-    <div class="cat-grid">
-      <button class="cat-card" data-cat="food-science">
-        <div class="cat-icon"><i class="fas fa-flask"></i></div>
-        <h3>Food Science</h3>
-        <p>Food safety, preservation, packaging, and the science behind what we eat.</p>
-        <span class="cat-go">Explore <i class="fas fa-arrow-right"></i></span>
-      </button>
-      <button class="cat-card" data-cat="ai">
-        <div class="cat-icon"><i class="fas fa-robot"></i></div>
-        <h3>Artificial Intelligence</h3>
-        <p>Practical AI tools and trends, and how machine intelligence is reshaping industries.</p>
-        <span class="cat-go">Explore <i class="fas fa-arrow-right"></i></span>
-      </button>
-      <button class="cat-card" data-cat="digital-marketing">
-        <div class="cat-icon"><i class="fas fa-bullhorn"></i></div>
-        <h3>Digital Marketing</h3>
-        <p>SEO, content strategy, paid ads, and growing a brand in the digital age.</p>
-        <span class="cat-go">Explore <i class="fas fa-arrow-right"></i></span>
-      </button>
-      <button class="cat-card" data-cat="student-resources">
-        <div class="cat-icon"><i class="fas fa-graduation-cap"></i></div>
-        <h3>Student Resources</h3>
-        <p>Scholarships, internships, productivity tips, and making the most of student life.</p>
-        <span class="cat-go">Explore <i class="fas fa-arrow-right"></i></span>
-      </button>
-      <button class="cat-card" data-cat="career">
-        <div class="cat-icon"><i class="fas fa-briefcase"></i></div>
-        <h3>Career</h3>
-        <p>Career development, job search strategy, and building a path after graduation.</p>
-        <span class="cat-go">Explore <i class="fas fa-arrow-right"></i></span>
-      </button>
-    </div>
+  <p class="page-sub">Notes and articles on food science, artificial intelligence, digital marketing, scholarships, and career growth.</p>
+  <div class="insight-search">
+    <input type="text" id="articleSearch" placeholder="Search articles by keyword..." aria-label="Search articles" oninput="handleSearch(this.value)"/>
+    <i class="fas fa-search search-icon"></i>
+    <span class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search"><i class="fas fa-times"></i></span>
   </div>
 </section>
 <!-- ARTICLES -->
@@ -214,11 +215,11 @@ footer span{color:var(--gold);}
   <div class="sec">
     <div class="ifilter" id="catFilter" role="tablist" aria-label="Filter articles by category">
       <button class="ifbtn active" data-cat="all">All</button>
-      <button class="ifbtn" data-cat="food-science">Food Science</button>
-      <button class="ifbtn" data-cat="ai">Artificial Intelligence</button>
+      <button class="ifbtn" data-cat="food-science">Food Science &amp; Technology</button>
       <button class="ifbtn" data-cat="digital-marketing">Digital Marketing</button>
-      <button class="ifbtn" data-cat="student-resources">Student Resources</button>
-      <button class="ifbtn" data-cat="career">Career</button>
+      <button class="ifbtn" data-cat="scholarships">Scholarships</button>
+      <button class="ifbtn" data-cat="ai-tech">AI &amp; Technology</button>
+      <button class="ifbtn" data-cat="career">Career &amp; Professional Development</button>
     </div>
 
     <div class="igrid" id="articleGrid">
@@ -270,27 +271,68 @@ footer span{color:var(--gold);}
 function toggleMob(){document.getElementById("mobMenu").classList.toggle("open");}
 document.getElementById("curYear").textContent=new Date().getFullYear();
 
-/* Category filter — already fully wired up. With zero real cards yet this
-   just shows/hides the empty state, but the moment real .icard elements
-   with matching data-cat attributes are added above, filtering works with
-   no further changes. */
+/* Category filter + keyword search work together and are both fully
+   wired up. With zero real cards yet, they just govern the empty state,
+   but the moment real .icard elements (with matching data-cat and
+   visible text) are added above, both work immediately — no further
+   JS changes needed. */
 const filterBtns=document.querySelectorAll(".ifbtn");
 const grid=document.getElementById("articleGrid");
-function applyFilter(cat){
-  filterBtns.forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));
-  grid.querySelectorAll(".icard").forEach(card=>{
-    card.style.display=(cat==="all"||card.dataset.cat===cat)?"":"none";
+const emptyState=document.getElementById("emptyState");
+let currentCat="all";
+function updateGrid(){
+  const query=document.getElementById("articleSearch").value.trim().toLowerCase();
+  const cards=grid.querySelectorAll(".icard");
+  let visibleCount=0;
+  cards.forEach(card=>{
+    const matchesCat=currentCat==="all"||card.dataset.cat===currentCat;
+    const matchesQuery=!query||card.textContent.toLowerCase().includes(query);
+    const show=matchesCat&&matchesQuery;
+    card.style.display=show?"":"none";
+    if(show) visibleCount++;
   });
+  const oldNoResults=document.getElementById("noResultsMsg");
+  if(oldNoResults) oldNoResults.remove();
+  if(cards.length>0){
+    // Real articles exist — hide the "coming soon" panel and, if a
+    // search/filter combination matches nothing, show a proper
+    // no-results message instead.
+    if(emptyState) emptyState.style.display="none";
+    if(visibleCount===0){
+      const msg=document.createElement("div");
+      msg.id="noResultsMsg";
+      msg.className="no-results";
+      msg.innerHTML=`<i class="fas fa-search" style="font-size:1.6rem;margin-bottom:0.8rem;display:block;"></i>No articles match${query?` "${query}"`:""}${currentCat!=="all"?" in this category":""}.`;
+      grid.appendChild(msg);
+    }
+  }
+}
+function applyFilter(cat){
+  currentCat=cat;
+  filterBtns.forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));
+  updateGrid();
+}
+function handleSearch(value){
+  document.getElementById("searchClear").classList.toggle("show",value.length>0);
+  updateGrid();
+}
+function clearSearch(){
+  const input=document.getElementById("articleSearch");
+  input.value="";
+  input.focus();
+  handleSearch("");
 }
 filterBtns.forEach(btn=>{
   btn.addEventListener("click",()=>applyFilter(btn.dataset.cat));
 });
-document.querySelectorAll(".cat-card").forEach(card=>{
-  card.addEventListener("click",()=>{
-    applyFilter(card.dataset.cat);
-    document.getElementById("articles").scrollIntoView({behavior:"smooth",block:"start"});
-  });
-});
+
+// Arriving from the nav dropdown (insights.html?cat=food-science) —
+// pre-select that category on load.
+const urlCat=new URLSearchParams(window.location.search).get("cat");
+if(urlCat){
+  const matchBtn=Array.from(filterBtns).find(b=>b.dataset.cat===urlCat);
+  if(matchBtn) applyFilter(urlCat);
+}
 
 const stb=document.getElementById("scrollTop");
 window.addEventListener("scroll",()=>{stb.classList.toggle("show",window.scrollY>400);});
